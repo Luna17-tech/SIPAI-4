@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materi PAI - Kelas 4 SD</title>
+    <link rel="stylesheet" href="css/modern-style.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <link rel="stylesheet" href="css/loader.css">
+    <link rel="stylesheet" href="css/notifications.css">
+    <style>
+        .topic-card {
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: block;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .topic-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            display: inline-block;
+            transition: transform 0.4s ease;
+        }
+
+        .topic-card:hover .topic-icon {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .topic-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            padding: 6px 12px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .gradient-bg-1 { background: var(--gradient-primary); }
+        .gradient-bg-2 { background: var(--gradient-success); }
+        .gradient-bg-3 { background: var(--gradient-warning); }
+        .gradient-bg-4 { background: var(--gradient-info); }
+        .gradient-bg-5 { background: var(--gradient-orange); }
+
+        .category-header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: linear-gradient(135deg, var(--color-primary) 0%, #764ba2 100%);
+            color: white;
+            border-radius: var(--radius-xl);
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .topic-icon { font-size: 60px; }
+            .category-header { padding: 40px 20px 30px; }
+        }
+    </style>
+</head>
+<body>
+    <div style="max-width: 1400px; margin: 0 auto; padding: 20px; padding-top: 100px;">
+        <!-- Header -->
+        <div class="category-header">
+            <h1 style="font-family: 'Fredoka', sans-serif; font-size: 56px; margin-bottom: 16px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">
+                📚 Pilih Materi Belajar
+            </h1>
+            <p style="font-size: 20px; opacity: 0.95;">Belajar agama islam dengan cara yang menyenangkan!</p>
+        </div>
+
+        
+        <!-- Materi Section -->
+        <div style="margin-bottom: 60px;">
+            <h2 style="font-family: 'Fredoka', sans-serif; font-size: 40px; margin-bottom: 30px; color: #2d3748; text-align: center;">
+                🟦 Materi
+            </h2>
+
+            <div id="materiGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px;">
+                <div class="modern-card" style="grid-column:1 / -1; text-align:center; padding:30px;">
+                    <p style="color:#718096;">Memuat materi...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; padding: 40px 20px;">
+            <p style="color: #100f0f; font-size: 16px;">💡 <strong>Tips:</strong> Klik materi untuk mulai belajar!</p>
+        </div>
+        
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/constants.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/loader.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/materi-firebase.js"></script>
+    
+</body>
+</html>

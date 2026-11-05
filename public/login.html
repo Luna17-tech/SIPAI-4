@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - PAI SD Kelas 4</title>
+    <link rel="stylesheet" href="css/modern-style.css">
+    <style>
+        input:focus {
+            outline: none;
+            border-color: var(--color-primary) !important;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .role-option {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .role-option input:checked + .modern-card {
+            background: var(--gradient-primary);
+            color: white;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
+        <div class="glass-container" style="max-width: 480px; width: 100%;">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <div style="font-size: 80px; margin-bottom: 20px;" class="icon-bounce">🎓</div>
+                <h1 style="font-family: 'Fredoka', sans-serif; font-size: 36px; color: #2d3748; margin-bottom: 8px;">
+                    Selamat Datang!
+                </h1>
+                <p style="color: #718096; font-size: 16px;">Silakan masuk untuk mulai belajar</p>
+            </div>
+
+            <!-- Role Selection -->
+            <div style="margin-bottom: 30px;">
+                <label style="display: block; margin-bottom: 12px; font-weight: 600; color: #2d3748;">Masuk sebagai:</label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <label class="role-option">
+                        <input type="radio" name="role" value="siswa" checked style="display: none;">
+                        <div class="modern-card" style="cursor: pointer; padding: 16px; text-align: center; margin: 0;">
+                            <div style="font-size: 32px; margin-bottom: 8px;">👨‍🎓</div>
+                            <div style="font-weight: 600;">Siswa</div>
+                        </div>
+                    </label>
+                    <label class="role-option">
+                        <input type="radio" name="role" value="guru" style="display: none;">
+                        <div class="modern-card" style="cursor: pointer; padding: 16px; text-align: center; margin: 0;">
+                            <div style="font-size: 32px; margin-bottom: 8px;">👩‍🏫</div>
+                            <div style="font-weight: 600;">Guru</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm">
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2d3748;">
+                        📧 Email
+                    </label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        required
+                        placeholder="contoh@email.com"
+                        style="width: 100%; padding: 14px 20px; border: 2px solid #e2e8f0; border-radius: var(--radius-md); font-size: 16px; transition: all 0.3s; font-family: 'Poppins', sans-serif;">
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2d3748;">
+                        🔒 Password
+                    </label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        required
+                        placeholder="••••••••"
+                        style="width: 100%; padding: 14px 20px; border: 2px solid #e2e8f0; border-radius: var(--radius-md); font-size: 16px; transition: all 0.3s; font-family: 'Poppins', sans-serif;">
+                </div>
+
+                <div style="text-align: right; margin-top: -10px; margin-bottom: 18px;">
+                    <a href="#"
+                    id="forgotPassword"
+                    style="
+                        color: var(--color-primary);
+                        font-weight: 600;
+                        font-size: 14px;
+                        text-decoration: none;
+                    ">
+                        Lupa Password?
+                    </a>
+                </div>
+
+                <div style="margin-bottom: 24px;">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <input type="checkbox" id="remember" style="width: 18px; height: 18px;">
+                        <span style="color: #718096;">Ingat saya</span>
+                    </label>
+                </div>
+
+                <button type="submit" id="submitBtn" class="btn-modern btn-primary" style="width: 100%; justify-content: center; font-size: 18px; padding: 16px;">
+                    Masuk
+                </button>
+
+                <div id="errorMsg" style="display: none; margin-top: 20px; padding: 16px; background: #fed7d7; color: #c53030; border-radius: var(--radius-md); text-align: center; font-weight: 600;">
+                    Terjadi kesalahan, coba lagi!
+                </div>
+            </form>
+
+            <div style="text-align: center; margin-top: 30px; padding-top: 30px; border-top: 1px solid #e2e8f0;">
+                <p style="color: #718096; margin-bottom: 12px;">Belum punya akun?</p>
+                <a href="https://wa.me/6289617418769?text=Halo%20Admin%2C%20saya%20ingin%20membuat%20akun."
+                    target="_blank"
+                    style="color: var(--color-primary); font-weight: 600; text-decoration: none;">
+                    Hubungi Admin →
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/constants.js"></script>
+    <script src="js/firebase-config.js"></script>
+    
+    <!-- Auth Script -->
+    <script>
+
+        const forgotPassword = document.getElementById('forgotPassword');
+
+        if (forgotPassword) {
+
+            forgotPassword.addEventListener('click', function(e) {
+
+                e.preventDefault();
+
+                const selectedRole = document.querySelector(
+                    'input[name="role"]:checked'
+                ).value;
+
+                const email = document.getElementById('email').value.trim();
+
+                // =========================
+                // SISWA
+                // =========================
+                if (selectedRole === 'siswa') {
+
+                    const nomorAdmin = '6289617418769';
+
+                    let pesan =
+                        'Halo, saya siswa SD Aisyiyah dan lupa password akun saya. Mohon bantuan untuk melakukan reset password.';
+
+                    // Jika email sudah diisi
+                    if (email) {
+                        pesan += '\n\nEmail akun: ' + email;
+                    }
+
+                    const urlWhatsApp =
+                        'https://wa.me/' +
+                        nomorAdmin +
+                        '?text=' +
+                        encodeURIComponent(pesan);
+
+                    window.open(urlWhatsApp, '_blank');
+
+                    return;
+                }
+
+
+                // =========================
+                // GURU
+                // =========================
+                if (selectedRole === 'guru') {
+
+                    window.location.href =
+                        'lupa-password.html';
+
+                }
+
+            });
+
+        }
+        
+        // Login Form Handler
+        const loginForm = document.getElementById('loginForm');
+        const errorMsg = document.getElementById('errorMsg');
+        const submitBtn = document.getElementById('submitBtn');
+
+        if (loginForm) {
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value;
+
+                const selectedRole = document.querySelector(
+                    'input[name="role"]:checked'
+                ).value;
+                
+                // Validate inputs
+                if (!email || !password) {
+                    errorMsg.textContent = '❌ Email dan password harus diisi!';
+                    errorMsg.style.display = 'block';
+                    return;
+                }
+                
+                if (!isValidEmail(email)) {
+                    errorMsg.textContent = '❌ Format email tidak valid!';
+                    errorMsg.style.display = 'block';
+                    return;
+                }
+                
+                // Show loading state
+                submitBtn.textContent = '⏳ Memproses...';
+                submitBtn.disabled = true;
+                errorMsg.style.display = 'none';
+                
+                try {
+
+                    // Login menggunakan Firebase Authentication
+                    const userCredential =
+                        await firebase.auth()
+                        .signInWithEmailAndPassword(email, password);
+
+                    const user = userCredential.user;
+
+
+                    // Ambil data user dari Realtime Database
+                    const userData = await getUserData(user.uid);
+
+
+                    // Pastikan data user tersedia
+                    if (!userData || !userData.role) {
+
+                        await firebase.auth().signOut();
+
+                        throw new Error(
+                            'Data user tidak ditemukan di database'
+                        );
+                    }
+
+
+                    // ============================================
+                    // CEK ROLE YANG DIPILIH DENGAN ROLE DATABASE
+                    // ============================================
+
+                    if (userData.role !== selectedRole) {
+
+                        await firebase.auth().signOut();
+
+                        errorMsg.textContent =
+                            `❌ Akun ini bukan akun ${selectedRole}!`;
+
+                        errorMsg.style.display = 'block';
+
+                        submitBtn.textContent = 'Masuk';
+                        submitBtn.disabled = false;
+
+                        return;
+                    }
+
+
+                    // ============================================
+                    // ROLE SESUAI
+                    // ============================================
+
+                    if (userData.role === 'siswa') {
+
+                        window.location.href =
+                            'dashboard-siswa.html';
+
+                    }
+
+                    else if (userData.role === 'guru') {
+
+                        window.location.href =
+                            'dashboard-guru.html';
+
+                    }
+
+                    else {
+
+                        await firebase.auth().signOut();
+
+                        throw new Error(
+                            'Role pengguna tidak valid'
+                        );
+                    }
+
+
+                } catch (error) {
+                    console.error('❌ Login error:', error);
+                    errorMsg.textContent = getErrorMessage(error);
+                    errorMsg.style.display = 'block';
+                    submitBtn.textContent = 'Masuk';
+                    submitBtn.disabled = false;
+                }
+            });
+        }
+
+        // Helper function to check user role
+        async function checkUserRole(uid) {
+            try {
+                const userData = await getUserData(uid);
+                
+                if (userData && userData.role) {
+                    if (userData.role === 'siswa') {
+                        window.location.href = 'dashboard-siswa.html';
+                    } else if (userData.role === 'guru') {
+                        window.location.href = 'dashboard-guru.html';
+                    }
+                }
+            } catch (error) {
+                console.error('Error checking user role:', error);
+            }
+        }
+
+        // Helper function for error messages
+        function getErrorMessage(error) {
+            const code = error.code || '';
+            const message = error.message || '';
+            
+            if (code === 'auth/invalid-email') return '❌ Email tidak valid!';
+            if (code === 'auth/user-disabled') return '❌ Akun ini dinonaktifkan!';
+            if (code === 'auth/user-not-found') return '❌ Email tidak terdaftar!';
+            if (code === 'auth/wrong-password') return '❌ Password salah!';
+            if (code === 'auth/invalid-credential') return '❌ Email atau password salah!';
+            if (code === 'auth/too-many-requests') return '❌ Terlalu banyak percobaan. Coba lagi nanti!';
+            if (code === 'auth/network-request-failed') return '❌ Koneksi internet bermasalah!';
+            
+            if (message.includes('tidak ditemukan')) return '❌ Data user tidak ditemukan. Hubungi admin!';
+            
+            return '❌ Login gagal! ' + message;
+        }
+    </script>
+</body>
+</html>

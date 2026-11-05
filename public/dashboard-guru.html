@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Guru - PAI SD</title>
+    <link rel="stylesheet" href="css/modern-style.css">
+</head>
+<body>
+    <div class="glass-container" style="max-width: 1400px; margin: 40px auto;">
+       <!-- Header -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px; gap:20px; flex-wrap:wrap;">
+            
+            <div style="flex:1; text-align:center;">
+                <h1 style="font-family: 'Fredoka', sans-serif; font-size: 48px; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px;">
+                    <span class="icon-bounce">👩‍🏫</span> Dashboard Guru
+                </h1>
+                <p style="font-size: 20px; color: #718096;">
+                    Selamat datang, 
+                    <span id="guruName" style="font-weight: 600; color: var(--color-primary);">
+                        Ibu Anis
+                    </span>!
+                </p>
+            </div>
+
+            <button onclick="logoutGuru()" class="btn-modern btn-danger" style="border:none; cursor:pointer;">
+                🚪 Logout
+            </button>
+        </div>
+
+        <!-- Stats Overview -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-bottom: 40px;">
+            <!-- Total Siswa -->
+            <div class="stat-card float-1">
+                <div class="stat-icon" style="background: var(--gradient-primary);">
+                    <span class="icon-pulse">👨‍🎓</span>
+                </div>
+                <div class="stat-content">
+                    <h3 id="totalStudents">0</h3>
+                    <p>Total Siswa</p>
+                </div>
+            </div>
+
+            <!-- Rata-rata Nilai -->
+            <div class="stat-card float-2">
+                <div class="stat-icon" style="background: var(--gradient-success);">
+                    <span class="icon-bounce">⭐</span>
+                </div>
+                <div class="stat-content">
+                    <h3 id="avgScore">0</h3>
+                    <p>Rata-rata Nilai</p>
+                </div>
+            </div>
+
+            <!-- Materi Aktif -->
+            <div class="stat-card float-3">
+                <div class="stat-icon" style="background: var(--gradient-warning);">
+                    <span class="icon-rotate">📚</span>
+                </div>
+                <div class="stat-content">
+                    <h3 id="totalMateriAktif">0</h3>
+                    <p>Materi Aktif</p>
+                </div>
+            </div>
+
+            <!-- Kuis Tersedia -->
+            <div class="stat-card float-1" style="animation-delay: 0.5s;">
+                <div class="stat-icon" style="background: var(--gradient-info);">
+                    <span class="icon-pulse">🎯</span>
+                </div>
+                <div class="stat-content">
+                    <h3 id="totalSoalKuis">0</h3>
+                    <p>Soal Kuis</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div style="margin-bottom: 40px;">
+            <h2 style="font-family: 'Fredoka', sans-serif; font-size: 28px; margin-bottom: 24px; color: #2d3748;">
+                ⚡ Quick Actions
+            </h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                <a href="#students" class="btn-modern btn-primary" style="justify-content: center;">
+                    👥 Lihat Siswa
+                </a>
+                <a href="#analytics" class="btn-modern btn-success" style="justify-content: center;">
+                    📊 Analisis Kelas
+                </a>
+                <a href="kelola-materi.html" class="btn-modern btn-warning" style="justify-content: center;">
+                    📚 Kelola Materi
+                </a>
+                <a href="kelola-kuis.html" class="btn-modern btn-primary" style="justify-content: center;">
+                    🎯 Kelola Kuis
+                </a>
+                <a href="kelola-user.html" class="btn-modern btn-success" style="justify-content: center;">
+                    👤 Kelola User
+                </a>
+                <button onclick="exportStudentData()" class="btn-modern btn-warning" style="justify-content: center; border:none; cursor:pointer;">
+                    📥 Export Data
+                </button>
+        </div>
+        </div>
+
+        <!-- Analisis Kelas -->
+        <div id="analytics" style="margin-bottom: 40px;">
+            <h2 style="font-family: 'Fredoka', sans-serif; font-size: 28px; margin-bottom: 24px; color: #2d3748;">
+                📊 Analisis Kelas
+            </h2>
+
+            <div class="modern-card">
+                <p style="color:#718096; margin-bottom: 16px;">
+                    Ringkasan perkembangan belajar siswa.
+                </p>
+
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:16px;">
+                    <div class="stat-card">
+                        <div class="stat-content">
+                            <h3 id="completionRate">0%</h3>
+                            <p>Rata-rata Penyelesaian Materi</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-content">
+                            <h3 id="activeStudents">0</h3>
+                            <p>Siswa Aktif Hari Ini</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daftar Siswa -->
+        <div id="students" style="margin-bottom: 40px;">
+            <h2 style="font-family: 'Fredoka', sans-serif; font-size: 28px; margin-bottom: 24px; color: #2d3748;">
+                👨‍🎓 Daftar Siswa
+            </h2>
+            
+<!-- Search Siswa -->
+<div style="
+    margin-bottom: 20px;
+    position: relative;
+">
+    <span style="
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 20px;
+    ">
+        🔍
+    </span>
+
+    <input
+        type="text"
+        id="searchStudent"
+        placeholder="Cari nama atau email siswa..."
+        autocomplete="off"
+        style="
+            width: 100%;
+            padding: 16px 50px;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+            background: white;
+            color: #2d3748;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        "
+        onfocus="
+            this.style.borderColor='#667eea';
+            this.style.boxShadow='0 5px 20px rgba(102,126,234,0.15)';
+        "
+        onblur="
+            this.style.borderColor='#e2e8f0';
+            this.style.boxShadow='0 5px 15px rgba(0,0,0,0.05)';
+        "
+    >
+</div>
+
+<!-- Urutkan Daftar Siswa -->
+<div style="
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:10px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+">
+
+    <label
+        for="studentSort"
+        style="
+            font-weight:600;
+            color:#4a5568;
+            font-size:14px;
+        "
+    >
+        🔃 Urutkan:
+    </label>
+
+    <select
+        id="studentSort"
+        style="
+            padding:12px 16px;
+            border:2px solid #e2e8f0;
+            border-radius:12px;
+            background:white;
+            color:#2d3748;
+            font-family:'Poppins', sans-serif;
+            font-size:14px;
+            cursor:pointer;
+            outline:none;
+        "
+    >
+        <option value="activity">
+            🟢 Keaktifan
+        </option>
+
+        <option value="score">
+            ⭐ Skor Tertinggi
+        </option>
+
+        <option value="progress">
+            📚 Progress Materi
+        </option>
+
+        <option value="name">
+            🔤 Nama A-Z
+        </option>
+    </select>
+
+</div>
+
+<!-- Daftar Siswa -->
+<div id="studentsList" style="display: grid; gap: 20px;"></div>
+        </div>
+    </div>
+
+    <div id="studentModal"
+     style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); justify-content:center; align-items:center; z-index:9999;">
+
+    <div class="glass-container"
+         style="max-width:700px; width:90%; max-height:80vh; overflow:auto;">
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 style="font-family:'Fredoka',sans-serif; color:#2d3748;">
+                Detail Siswa
+            </h2>
+
+            <button onclick="document.getElementById('studentModal').style.display='none'"
+                    style="border:none; background:#f56565; color:white; padding:8px 12px; border-radius:8px; cursor:pointer;">
+                ✕
+            </button>
+        </div>
+
+        <div id="studentDetailContent"></div>
+    </div>
+</div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/constants.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/dashboard-guru.js"></script>
+</body>
+</html>
+

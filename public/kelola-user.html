@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola User - Dashboard Guru</title>
+    <link rel="stylesheet" href="css/modern-style.css">
+</head>
+<body>
+    <div class="glass-container" style="max-width: 1100px; margin: 40px auto;">
+
+        <!-- Header -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px; gap:16px; flex-wrap:wrap;">
+            <div>
+                <h1 style="font-family:'Fredoka',sans-serif; font-size:42px; background:var(--gradient-primary);-webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:8px;">
+                    👤 Kelola User
+                </h1>
+                <p style="color:#718096; font-size:18px;">
+                    Tambah akun siswa atau guru.
+                </p>
+            </div>
+
+            <a href="dashboard-guru.html" class="btn-modern btn-primary">
+                ← Kembali
+            </a>
+        </div>
+
+        <!-- Form Tambah User -->
+        <div class="modern-card" style="margin-bottom:32px;">
+            <h2 style="font-family:'Fredoka',sans-serif; color:#2d3748; margin-bottom:20px;">
+                ➕ Tambah User Baru
+            </h2>
+
+            <!-- Search User -->
+            <div style="
+                position: relative;
+                margin-bottom: 20px;
+            ">
+                <span style="
+                    position: absolute;
+                    left: 18px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    font-size: 19px;
+                    pointer-events: none;
+                ">
+                    🔍
+                </span>
+
+                <input
+                    type="text"
+                    id="searchUser"
+                    placeholder="Cari nama, email, atau role..."
+                    autocomplete="off"
+                    style="
+                        width: 100%;
+                        padding: 15px 50px;
+                        border: 2px solid #e2e8f0;
+                        border-radius: 14px;
+                        font-family: 'Poppins', sans-serif;
+                        font-size: 14px;
+                        color: #2d3748;
+                        background: white;
+                        outline: none;
+                        transition: 0.3s;
+                        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+                    "
+                    onfocus="
+                        this.style.borderColor='#667eea';
+                        this.style.boxShadow='0 5px 20px rgba(102,126,234,0.15)';
+                    "
+                    onblur="
+                        this.style.borderColor='#e2e8f0';
+                        this.style.boxShadow='0 5px 15px rgba(0,0,0,0.05)';
+                    "
+                >
+            </div>
+
+            <div style="display:grid; gap:16px;">
+                <div>
+                    <label style="font-weight:600; color:#2d3748;">Nama Lengkap</label>
+                    <input type="text" id="namaUser" placeholder="Contoh: Siswa Baru"
+                           style="width:100%; padding:14px; border-radius:12px; border:1px solid #e2e8f0; margin-top:8px;">
+                </div>
+
+                <div>
+                    <label style="font-weight:600; color:#2d3748;">Email</label>
+                    <input type="email" id="emailUser" placeholder="contoh@email.com"
+                           style="width:100%; padding:14px; border-radius:12px; border:1px solid #e2e8f0; margin-top:8px;">
+                </div>
+
+                <div>
+                    <label style="font-weight:600; color:#2d3748;">Password</label>
+                    <input type="password" id="passwordUser" placeholder="Minimal 6 karakter"
+                           style="width:100%; padding:14px; border-radius:12px; border:1px solid #e2e8f0; margin-top:8px;">
+                </div>
+
+                <div>
+                    <label style="font-weight:600; color:#2d3748;">Role</label>
+                    <select id="roleUser"
+                            style="width:100%; padding:14px; border-radius:12px; border:1px solid #e2e8f0; margin-top:8px;">
+                        <option value="siswa">Siswa</option>
+                        <option value="guru">Guru</option>
+                    </select>
+                </div>
+
+                <button onclick="tambahUser()" class="btn-modern btn-success" style="border:none; cursor:pointer;">
+                    💾 Simpan User
+                </button>
+            </div>
+        </div>
+
+        <!-- Daftar User -->
+        <div>
+            <h2 style="font-family:'Fredoka',sans-serif; color:#2d3748; margin-bottom:20px;">
+                📋 Daftar User
+            </h2>
+
+            <div id="userList" style="display:grid; gap:18px;">
+                <div class="modern-card">
+                    <p style="color:#718096;">Memuat data user...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Reset Password -->
+    <div id="resetPasswordModal"
+        style="
+            display:none;
+            position:fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background:rgba(0,0,0,0.5);
+            align-items:center;
+            justify-content:center;
+            z-index:9999;
+            padding:20px;
+        ">
+
+        <div class="modern-card"
+            style="
+                max-width:450px;
+                width:100%;
+                background:white;
+            ">
+
+            <h2 style="
+                font-family:'Fredoka',sans-serif;
+                color:#2d3748;
+                margin-bottom:20px;
+            ">
+                🔑 Reset Password Siswa
+            </h2>
+
+            <div style="margin-bottom:16px;">
+                <label style="font-weight:600; color:#2d3748;">
+                    Nama Siswa
+                </label>
+
+                <input
+                    type="text"
+                    id="resetNama"
+                    readonly
+                    style="
+                        width:100%;
+                        padding:12px;
+                        border-radius:10px;
+                        border:1px solid #e2e8f0;
+                        margin-top:8px;
+                        background:#f7fafc;
+                    ">
+            </div>
+
+            <div style="margin-bottom:16px;">
+                <label style="font-weight:600; color:#2d3748;">
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    id="resetEmail"
+                    readonly
+                    style="
+                        width:100%;
+                        padding:12px;
+                        border-radius:10px;
+                        border:1px solid #e2e8f0;
+                        margin-top:8px;
+                        background:#f7fafc;
+                    ">
+            </div>
+
+            <div style="margin-bottom:16px;">
+                <label style="font-weight:600; color:#2d3748;">
+                    Password Baru
+                </label>
+
+                <input
+                    type="password"
+                    id="resetPassword"
+                    placeholder="Minimal 6 karakter"
+                    style="
+                        width:100%;
+                        padding:12px;
+                        border-radius:10px;
+                        border:1px solid #e2e8f0;
+                        margin-top:8px;
+                    ">
+            </div>
+
+            <div style="margin-bottom:20px;">
+                <label style="font-weight:600; color:#2d3748;">
+                    Konfirmasi Password
+                </label>
+
+                <input
+                    type="password"
+                    id="resetKonfirmasi"
+                    placeholder="Masukkan ulang password"
+                    style="
+                        width:100%;
+                        padding:12px;
+                        border-radius:10px;
+                        border:1px solid #e2e8f0;
+                        margin-top:8px;
+                    ">
+            </div>
+
+            <div id="resetMessage"
+                style="
+                    display:none;
+                    margin-bottom:16px;
+                    padding:12px;
+                    border-radius:10px;
+                    text-align:center;
+                ">
+            </div>
+
+            <div style="
+                display:flex;
+                gap:12px;
+                justify-content:flex-end;
+            ">
+
+                <button
+                    type="button"
+                    onclick="tutupResetPassword()"
+                    class="btn-modern"
+                    style="
+                        border:none;
+                        cursor:pointer;
+                    ">
+                    Batal
+                </button>
+
+                <button
+                    type="button"
+                    id="btnResetPassword"
+                    onclick="simpanResetPassword()"
+                    class="btn-modern btn-success"
+                    style="
+                        border:none;
+                        cursor:pointer;
+                    ">
+                    🔑 Reset Password
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
+
+    <script src="js/utils.js"></script>
+    <script src="js/constants.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/kelola-user.js"></script>
+</body>
+</html>

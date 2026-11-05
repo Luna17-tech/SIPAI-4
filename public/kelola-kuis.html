@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Kuis - Dashboard Guru</title>
+    <link rel="stylesheet" href="css/modern-style.css">
+</head>
+<body>
+    <div class="glass-container" style="max-width: 1200px; margin: 40px auto;">
+
+        <!-- Header -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px; gap:16px; flex-wrap:wrap;">
+            <div>
+                <h1 style="font-family:'Fredoka',sans-serif; font-size:42px; background:var(--gradient-warning); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:8px;">
+                    🎯 Kelola Kuis
+                </h1>
+                <p style="color:#718096; font-size:18px;">
+                    Tambah, ubah, dan hapus kuis berdasarkan materi PAI Kelas 4.
+                </p>
+            </div>
+
+            <a href="dashboard-guru.html" class="btn-modern btn-primary">
+                ← Kembali
+            </a>
+        </div>
+
+        <!-- Form Kuis -->
+        <div class="modern-card" style="margin-bottom:32px;">
+            <h2 style="font-family:'Fredoka',sans-serif; color:#2d3748; margin-bottom:20px;">
+                ✏️ Form Kuis
+            </h2>
+
+            <input type="hidden" id="quizId">
+
+            <div style="display:grid; gap:16px;">
+                <div>
+                    <label style="font-weight:600; color:#2d3748;">Pilih Materi</label>
+                    <select id="materiSelect" style="width:100%; padding:14px; border-radius:12px; border:1px solid #e2e8f0; margin-top:8px;">
+                        <option value="">Memuat materi...</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label style="font-weight:600; color:#2d3748;">Judul Kuis</label>
+                    <input type="text" id="judulKuis" placeholder="Contoh: Kuis Bab 1 - Keragaman"
+                           style="width:100%; padding:14px; border-radius:12px; border:1px solid #e2e8f0; margin-top:8px;">
+                </div>
+
+                <div>
+                    <label style="font-weight:600; color:#2d3748;">Deskripsi Kuis</label>
+                    <textarea id="deskripsiKuis" rows="3" placeholder="Contoh: 5 soal tentang keragaman dan sikap saling menghargai."
+                              style="width:100%; padding:14px; border-radius:12px; border:1px solid #e2e8f0; margin-top:8px;"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Soal -->
+        <div class="modern-card" style="margin-bottom:32px;">
+            <h2 style="font-family:'Fredoka',sans-serif; color:#2d3748; margin-bottom:20px;">
+                📝 Tambah Soal
+            </h2>
+
+            <div style="display:grid; gap:16px;">
+                <div>
+                    <label style="font-weight:600; color:#2d3748;">Pertanyaan</label>
+                    <textarea id="soalInput" rows="3" placeholder="Tulis pertanyaan kuis..."
+                              style="width:100%; padding:14px; border-radius:12px; border:1px solid #e2e8f0; margin-top:8px;"></textarea>
+                </div>
+
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px;">
+                    <div>
+                        <label style="font-weight:600;">Pilihan A</label>
+                        <input type="text" id="pilihanA" style="width:100%; padding:12px; border-radius:10px; border:1px solid #e2e8f0; margin-top:8px;">
+                    </div>
+
+                    <div>
+                        <label style="font-weight:600;">Pilihan B</label>
+                        <input type="text" id="pilihanB" style="width:100%; padding:12px; border-radius:10px; border:1px solid #e2e8f0; margin-top:8px;">
+                    </div>
+
+                    <div>
+                        <label style="font-weight:600;">Pilihan C</label>
+                        <input type="text" id="pilihanC" style="width:100%; padding:12px; border-radius:10px; border:1px solid #e2e8f0; margin-top:8px;">
+                    </div>
+
+                    <div>
+                        <label style="font-weight:600;">Pilihan D</label>
+                        <input type="text" id="pilihanD" style="width:100%; padding:12px; border-radius:10px; border:1px solid #e2e8f0; margin-top:8px;">
+                    </div>
+                </div>
+
+                <div>
+                    <label style="font-weight:600; color:#2d3748;">Jawaban Benar</label>
+                    <select id="jawabanBenar" style="width:100%; padding:14px; border-radius:12px; border:1px solid #e2e8f0; margin-top:8px;">
+                        <option value="">Pilih jawaban benar</option>
+                        <option value="0">A</option>
+                        <option value="1">B</option>
+                        <option value="2">C</option>
+                        <option value="3">D</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label style="font-weight:600; color:#2d3748;">Pembahasan / Penjelasan</label>
+                    <textarea id="pembahasanInput" rows="3" placeholder="Opsional: tulis pembahasan jawaban..."
+                              style="width:100%; padding:14px; border-radius:12px; border:1px solid #e2e8f0; margin-top:8px;"></textarea>
+                </div>
+
+                <button onclick="tambahSoal()" class="btn-modern btn-primary" style="border:none; cursor:pointer;">
+                    ➕ Tambah Soal ke Kuis
+                </button>
+            </div>
+        </div>
+
+        <!-- Preview Soal -->
+        <div class="modern-card" style="margin-bottom:32px;">
+            <h2 style="font-family:'Fredoka',sans-serif; color:#2d3748; margin-bottom:20px;">
+                📋 Daftar Soal Sementara
+            </h2>
+
+            <div id="soalPreview" style="display:grid; gap:14px;">
+                <p style="color:#718096;">Belum ada soal ditambahkan.</p>
+            </div>
+
+            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:24px;">
+                <button onclick="simpanKuis()" class="btn-modern btn-success" style="border:none; cursor:pointer;">
+                    💾 Simpan Kuis
+                </button>
+
+                <button onclick="resetFormKuis()" class="btn-modern btn-warning" style="border:none; cursor:pointer;">
+                    🔄 Reset
+                </button>
+            </div>
+        </div>
+
+        <!-- Daftar Kuis -->
+        <div>
+            <h2 style="font-family:'Fredoka',sans-serif; color:#2d3748; margin-bottom:20px;">
+                🎯 Daftar Kuis
+            </h2>
+
+            <div id="kuisList" style="display:grid; gap:18px;">
+                <div class="modern-card">
+                    <p style="color:#718096;">Memuat data kuis...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <script src="js/utils.js"></script>
+    <script src="js/constants.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/kelola-kuis.js"></script>
+</body>
+</html>

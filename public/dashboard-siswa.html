@@ -1,0 +1,2047 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Siswa - PAI SD Kelas 4</title>
+    <link rel="stylesheet" href="css/modern-style.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <link rel="stylesheet" href="css/loader.css">
+    <link rel="stylesheet" href="css/notifications.css">
+    <link rel="stylesheet" href="css/confetti.css">
+    <style>
+        .welcome-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            border-radius: var(--radius-xl);
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        .quick-action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 30px 0;
+        }
+
+        .achievement-preview {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .achievement-badge {
+            background: white;
+            border-radius: var(--radius-md);
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+        }
+
+        .achievement-badge:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .achievement-badge.locked {
+            opacity: 0.65;
+            filter: grayscale(70%);
+        }
+
+        .recent-activity {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-top: 20px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            border-left: 3px solid #e2e8f0;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .activity-item:hover {
+            border-left-color: var(--color-primary);
+            background: #f7fafc;
+        }
+
+        .activity-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background: var(--gradient-primary);
+        }
+    </style>
+</head>
+<body>
+    <div style="max-width: 1400px; margin: 0 auto; padding: 20px; padding-top: 100px;">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <div style="position: relative; z-index: 1;">
+                <h1 style="font-family: 'Fredoka', sans-serif; font-size: 48px; margin-bottom: 12px;">
+                    Selamat Datang, <span id="userName">Siswa</span>! 👋
+                </h1>
+                <p style="font-size: 20px; opacity: 0.95; margin-bottom: 30px;">
+                    Ayo lanjutkan belajar agama hari ini!
+                </p>
+                
+                <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: center;">
+                    <div style="background: rgba(255,255,255,0.2); padding: 16px 24px; border-radius: var(--radius-md); backdrop-filter: blur(10px);">
+                        <div style="font-size: 14px; opacity: 0.9; margin-bottom: 4px;">Hari Belajar</div>
+                        <div id="streakBelajar" style="font-size: 32px; font-weight: 700;">🔥 0 Hari</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 16px 24px; border-radius: var(--radius-md); backdrop-filter: blur(10px);">
+                        <div style="font-size: 14px; opacity: 0.9; margin-bottom: 4px;">Total XP</div>
+                        <div id="totalXP" style="font-size: 32px; font-weight: 700;">⭐ 0</div>
+                    </div>
+                    <!-- Level Belajar -->
+                    <div style="
+                        background: rgba(255,255,255,0.2);
+                        padding: 16px 24px;
+                        border-radius: var(--radius-md);
+                        backdrop-filter: blur(10px);
+                        min-width: 220px;
+                    ">
+
+                        <div style="
+                            font-size: 14px;
+                            opacity: 0.9;
+                            margin-bottom: 4px;
+                        ">
+                            Level Belajar
+                        </div>
+
+                        <div id="levelBelajar" style="
+                            font-size: 27px;
+                            font-weight: 700;
+                        ">
+                            🏅 Level 1
+                        </div>
+
+                        <div id="levelTitle" style="
+                            font-size: 13px;
+                            margin-top: 3px;
+                            opacity: 0.95;
+                        ">
+                            🌱 Pemula PAI
+                        </div>
+
+                        <div style="
+                            height: 7px;
+                            background: rgba(255,255,255,0.25);
+                            border-radius: 10px;
+                            overflow: hidden;
+                            margin-top: 10px;
+                        ">
+
+                            <div id="levelProgressBar" style="
+                                height: 100%;
+                                width: 0%;
+                                background: white;
+                                border-radius: 10px;
+                                transition: width 0.5s ease;
+                            ">
+                            </div>
+
+                        </div>
+
+                        <div id="levelProgressText" style="
+                            font-size: 11px;
+                            margin-top: 5px;
+                            opacity: 0.9;
+                        ">
+                            0 / 100 XP
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Overview -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-bottom: 40px;">
+            <!-- Materi Selesai -->
+            <div class="stat-card float-1">
+                <div class="stat-icon" style="background: var(--gradient-success);">
+                    <span class="icon-pulse">📚</span>
+                </div>
+                <div class="stat-content">
+                    <h3 id="materiSelesai">0</h3>
+                    <p>Materi Selesai</p>
+                </div>
+            </div>
+
+            <!-- Kuis Dikerjakan -->
+            <div class="stat-card float-2">
+                <div class="stat-icon" style="background: var(--gradient-warning);">
+                    <span class="icon-bounce">🎯</span>
+                </div>
+                <div class="stat-content">
+                    <h3 id="kuisDikerjakan">0</h3>
+                    <p>Kuis Dikerjakan</p>
+                </div>
+            </div>
+
+            <!-- Skor Rata-rata -->
+            <div class="stat-card float-3">
+                <div class="stat-icon" style="background: var(--gradient-primary);">
+                    <span class="icon-rotate">⭐</span>
+                </div>
+                <div class="stat-content">
+                    <h3 id="skorRata">0</h3>
+                    <p>Skor Rata-rata</p>
+                </div>
+            </div>
+
+            <!-- Badge Terkumpul -->
+            <div class="stat-card float-1" style="animation-delay: 0.5s;">
+                <div class="stat-icon" style="background: var(--gradient-info);">
+                    <span class="icon-pulse">🏆</span>
+                </div>
+                <div class="stat-content">
+                    <h3 id="badgeCount">0</h3>
+                    <p>Badge Terkumpul</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div style="margin-bottom: 40px;">
+            <h2 style="font-family: 'Fredoka', sans-serif; font-size: 32px; margin-bottom: 24px; color: #2d3748;">
+                ⚡ Menu Cepat
+            </h2>
+            
+            <div class="quick-action-grid">
+                <a href="materi.html" class="btn-modern btn-primary" style="justify-content: center; padding: 20px; font-size: 18px; text-decoration: none;">
+                    📖 Lihat Materi
+                </a>
+                <a href="kuis.html" class="btn-modern btn-success" style="justify-content: center; padding: 20px; font-size: 18px; text-decoration: none;">
+                    🎯 Kerjakan Kuis
+                </a>
+                <a href="progress.html" class="btn-modern btn-warning" style="justify-content: center; padding: 20px; font-size: 18px; text-decoration: none;">
+                    📊 Lihat Progress
+                </a>
+                <a href="achievements.html" class="btn-modern btn-success" style="justify-content: center; padding: 20px; font-size: 18px; text-decoration: none;">
+                    🏆 Achievements
+                </a>
+            </div>
+        </div>
+
+        <!-- ========================================
+            MISI BELAJAR
+        ======================================== -->
+
+        <div class="glass-container"
+            style="margin-bottom: 40px;">
+
+            <div style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 24px;
+            ">
+
+                <div>
+
+                    <h2 style="
+                        font-family: 'Fredoka', sans-serif;
+                        font-size: 28px;
+                        color: #2d3748;
+                        margin-bottom: 4px;
+                    ">
+                        🎯 Misi Belajar
+                    </h2>
+
+                    <p style="
+                        color: #718096;
+                        font-size: 14px;
+                    ">
+                        Selesaikan target untuk membuka
+                        achievement baru!
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div id="missionContainer"
+                style="
+                    display: grid;
+                    grid-template-columns:
+                        repeat(auto-fit, minmax(240px,1fr));
+                    gap: 16px;
+                ">
+
+                <div class="modern-card">
+
+                    <p style="color:#718096;">
+                        Memuat misi belajar...
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Progress Overview -->
+        <div class="glass-container" style="margin-bottom: 40px;">
+            <h2 style="font-family: 'Fredoka', sans-serif; font-size: 28px; margin-bottom: 24px; color: #2d3748;">
+                📊 Progress Belajar
+            </h2>
+            
+            <div style="margin-bottom: 30px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                    <span style="font-weight: 600; color: #2d3748;">Progress Keseluruhan</span>
+                    <span style="color: #718096;" id="overallProgress">0%</span>
+                </div>
+                <div class="progress-bar-modern">
+                    <div class="progress-fill" id="overallProgressBar" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <div style="display: grid; gap: 16px;">
+                <div id="materiProgressContainer" style="
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 12px;
+                    ">
+                </div>
+            </div>
+        </div>
+    
+
+        <!-- Recent Achievements -->
+        <div style="margin-bottom: 40px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <h2 style="font-family: 'Fredoka', sans-serif; font-size: 28px; color: #2d3748;">
+                    🏆 Achievement Terbaru
+                </h2>
+                <a href="achievements.html" style="color: var(--color-primary); text-decoration: none; font-weight: 600;">
+                    Lihat Semua →
+                </a>
+            </div>
+
+            <div class="achievement-preview" id="achievementPreview">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+
+        
+
+        <!-- Recent Activity -->
+        <div>
+            <h2 style="font-family: 'Fredoka', sans-serif; font-size: 28px; margin-bottom: 24px; color: #2d3748;">
+                📅 Aktivitas Terakhir
+            </h2>
+
+            <div class="recent-activity" id="recentActivity">
+                <div class="activity-item">
+                    <div class="activity-icon">🎓</div>
+                    <div style="flex: 1;">
+                        <h4 style="font-weight: 600; color: #2d3748; margin-bottom: 4px;">Selamat Datang!</h4>
+                        <p style="color: #718096; font-size: 14px;">Mulai belajar dengan materi PAI</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Motivational Quote -->
+        <div class="gradient-card" style="margin-top: 40px; text-align: center; padding: 50px 30px; background: var(--gradient-success); color: white;">
+            <div style="font-size: 60px; margin-bottom: 20px;" class="icon-bounce">💪</div>
+            <h3 style="font-family: 'Fredoka', sans-serif; font-size: 32px; margin-bottom: 16px;">
+                "Belajar Sedikit Setiap Hari, Raih Kesuksesan!"
+            </h3>
+            <p style="font-size: 18px; opacity: 0.95; margin-bottom: 30px;">
+                Tetap semangat dan jangan menyerah!
+            </p>
+            <a href="materi.html" class="btn-modern" style="background: white; color: var(--color-success); text-decoration: none;">
+                🚀 Mulai Belajar Sekarang
+            </a>
+        </div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/constants.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/loader.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/confetti.js"></script>
+    
+    <script>
+        console.log('🎓 Dashboard Siswa loaded!');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initNavigation('dashboard');
+        });
+
+        // Check authentication and load data
+        firebase.auth().onAuthStateChanged(async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            console.log('✅ User logged in:', user.uid);
+            
+            // Load user data
+            try {
+                const snapshot = await firebase.database().ref('users/' + user.uid).once('value');
+                const userData = snapshot.val();
+                
+                if (userData) {
+                    await updateLoginStreak(user.uid);
+                    await loadXP(user.uid);
+
+                    async function loadXP(userId) {
+                const xpRef = firebase.database().ref('xp/' + userId);
+
+                const snapshot = await xpRef.once('value');
+                const xpData = snapshot.val();
+
+                let totalXP = 0;
+
+                if (xpData) {
+                    totalXP = xpData.total || 0;
+                } else {
+                await xpRef.set({
+                    total: 0
+                });
+                }
+
+                document.getElementById('totalXP').textContent =
+                    `⭐ ${totalXP}`;
+                renderLevel(totalXP);
+}
+
+                // ========================================
+                // SISTEM LEVEL BELAJAR
+                // ========================================
+
+                function renderLevel(totalXP) {
+
+                    totalXP = Number(totalXP) || 0;
+
+                    let level = 1;
+                    let title = '🌱 Pemula PAI';
+
+                    let minXP = 0;
+                    let nextXP = 100;
+
+
+                    // LEVEL 1
+                    if (totalXP < 100) {
+
+                        level = 1;
+                        title = '🌱 Pemula PAI';
+
+                        minXP = 0;
+                        nextXP = 100;
+
+                    }
+
+                    // LEVEL 2
+                    else if (totalXP < 250) {
+
+                        level = 2;
+                        title = '📖 Pelajar PAI';
+
+                        minXP = 100;
+                        nextXP = 250;
+
+                    }
+
+                    // LEVEL 3
+                    else if (totalXP < 450) {
+
+                        level = 3;
+                        title = '✨ Siswa Rajin';
+
+                        minXP = 250;
+                        nextXP = 450;
+
+                    }
+
+                    // LEVEL 4
+                    else if (totalXP < 700) {
+
+                        level = 4;
+                        title = '🕌 Santri Hebat';
+
+                        minXP = 450;
+                        nextXP = 700;
+
+                    }
+
+                    // LEVEL 5
+                    else {
+
+                        level = 5;
+                        title = '👑 Bintang PAI';
+
+                        minXP = 700;
+                        nextXP = null;
+
+                    }
+
+
+                    const levelElement =
+                        document.getElementById(
+                            'levelBelajar'
+                        );
+
+                    const titleElement =
+                        document.getElementById(
+                            'levelTitle'
+                        );
+
+                    const progressBar =
+                        document.getElementById(
+                            'levelProgressBar'
+                        );
+
+                    const progressText =
+                        document.getElementById(
+                            'levelProgressText'
+                        );
+
+
+                    if (levelElement) {
+
+                        levelElement.textContent =
+                            `🏅 Level ${level}`;
+
+                    }
+
+
+                    if (titleElement) {
+
+                        titleElement.textContent =
+                            title;
+
+                    }
+
+
+                    // LEVEL MAKSIMUM
+                    if (nextXP === null) {
+
+                        if (progressBar) {
+
+                            progressBar.style.width =
+                                '100%';
+
+                        }
+
+                        if (progressText) {
+
+                            progressText.textContent =
+                                'Level Maksimum 👑';
+
+                        }
+
+                        return;
+
+                    }
+
+
+                    // HITUNG PROGRESS LEVEL
+                    const progress =
+                        Math.min(
+                            100,
+                            Math.max(
+                                0,
+                                (
+                                    (totalXP - minXP) /
+                                    (nextXP - minXP)
+                                ) * 100
+                            )
+                        );
+
+
+                    if (progressBar) {
+
+                        progressBar.style.width =
+                            progress + '%';
+
+                    }
+
+
+                    if (progressText) {
+
+                        progressText.textContent =
+                            `${totalXP} / ${nextXP} XP`;
+
+                    }
+
+                }
+
+                    console.log('👤 User data:', userData);
+                    const userNameEl = document.getElementById('userName');
+                    if (userNameEl) {
+                        userNameEl.textContent = userData.name || 'Siswa';
+                        loadRealStats(user.uid);
+                    }
+        
+                    
+                   
+                    // Load recent activity
+                    loadRecentActivity(user.uid);
+
+                    // Load learning missions
+                    loadLearningMissions(user.uid);
+                    
+                    // Update achievements
+                    updateAchievements(user.uid);
+                    
+                    
+                    // Show welcome notification
+                    showSuccess(`Selamat datang kembali, ${userData.name || 'Siswa'}! 🎉`);
+                }
+            } catch (error) {
+                console.error('❌ Error loading user data:', error);
+                showError('Gagal memuat data pengguna!');
+            }
+        });
+
+        async function updateLoginStreak(userId) {
+
+            const streakRef =
+                firebase.database().ref(
+                    'streaks/' + userId
+                );
+
+            const snapshot =
+                await streakRef.once('value');
+
+            const data =
+                snapshot.val();
+
+            const today =
+                new Date();
+
+            today.setHours(
+                0,
+                0,
+                0,
+                0
+            );
+
+            let streak = 1;
+
+            if (data) {
+
+                streak =
+                    Number(data.streak) || 0;
+
+                if (data.lastLogin) {
+
+                    const lastLogin =
+                        new Date(data.lastLogin);
+
+                    lastLogin.setHours(
+                        0,
+                        0,
+                        0,
+                        0
+                    );
+
+                    // Login pada tanggal berbeda
+                    // = tambah Hari Belajar
+                    if (
+                        today.getTime() !==
+                        lastLogin.getTime()
+                    ) {
+                        streak += 1;
+                    }
+
+                } else {
+
+                    if (streak === 0) {
+                        streak = 1;
+                    }
+
+                }
+
+            }
+
+            await streakRef.update({
+
+                streak: streak,
+
+                lastLogin: Date.now()
+
+            });
+
+            const streakElement =
+                document.getElementById(
+                    'streakBelajar'
+                );
+
+            if (streakElement) {
+
+                streakElement.textContent =
+                    `🔥 ${streak} Hari`;
+
+            }
+
+        }
+
+         // ========================================
+                    // MISI BELAJAR
+                    // ========================================
+
+                    async function loadLearningMissions(userId) {
+
+                    const container =
+                        document.getElementById(
+                            'missionContainer'
+                        );
+
+                    if (!container) return;
+
+
+                    try {
+
+                        // ========================================
+                        // AMBIL DATA
+                        // ========================================
+
+                        const materiSnapshot =
+                            await firebase.database()
+                                .ref('materi-kelas4')
+                                .once('value');
+
+
+                        const progressSnapshot =
+                            await firebase.database()
+                                .ref(
+                                    'progress/' +
+                                    userId +
+                                    '/materi'
+                                )
+                                .once('value');
+
+
+                        const quizSnapshot =
+                            await firebase.database()
+                                .ref(
+                                    'quiz-results/' +
+                                    userId
+                                )
+                                .once('value');
+
+
+                        const materiData =
+                            materiSnapshot.val() || {};
+
+                        const progressData =
+                            progressSnapshot.val() || {};
+
+                        const quizData =
+                            quizSnapshot.val() || {};
+
+
+                        // ========================================
+                        // HITUNG PROGRESS
+                        // ========================================
+
+                        const materiIds =
+                            Object.keys(materiData);
+
+
+                        const completedCount =
+                            materiIds.filter(id => {
+
+                                return (
+                                    progressData[id]?.completed ===
+                                    true
+                                );
+
+                            }).length;
+
+
+                        const quizArray =
+                            Object.values(quizData);
+
+
+                        const quizCount =
+                              new Set(
+
+                            quizArray
+                                .map(result =>
+                                    result.quizId ||
+                                    result.materiId ||
+                                    result.quizType
+                                )
+                                .filter(Boolean)
+
+                        ).size;
+
+
+                        const hasPerfectScore =
+                            quizArray.some(result => {
+
+                                return (
+                                    Number(result.score) >= 100
+                                );
+
+                            });
+
+
+                        // ========================================
+                        // TARGET MATERI
+                        // ========================================
+
+                        let targetMateri = 1;
+                        let rewardMateri =
+                            '📖 Langkah Pertama';
+
+
+                        if (completedCount >= 1) {
+
+                            targetMateri = 3;
+                            rewardMateri =
+                                '✨ Rajin Belajar';
+
+                        }
+
+
+                        if (completedCount >= 3) {
+
+                            targetMateri = 5;
+                            rewardMateri =
+                                '🕌 Santri Rajin';
+
+                        }
+
+
+                        if (completedCount >= 5) {
+
+                            targetMateri = 10;
+                            rewardMateri =
+                                '📚 Ahli PAI';
+
+                        }
+
+
+                        const materiSelesai =
+                            completedCount >= 10;
+
+
+                        // ========================================
+                        // TARGET KUIS
+                        // ========================================
+
+                        let targetKuis = 1;
+                        let rewardKuis =
+                            '🎯 Pejuang Kuis';
+
+
+                        if (quizCount >= 1) {
+
+                            targetKuis = 3;
+                            rewardKuis =
+                                '🎯 Pejuang Kuis';
+
+                        }
+
+
+                        if (quizCount >= 3) {
+
+                            targetKuis = 5;
+                            rewardKuis =
+                                '🎯 Ahli Kuis';
+
+                        }
+
+
+                        if (quizCount >= 5) {
+
+                            targetKuis = 10;
+                            rewardKuis =
+                                '👑 Master Kuis';
+
+                        }
+
+
+                        const kuisSelesai =
+                            quizCount >= 10;
+
+
+                        // ========================================
+                        // PERSENTASE
+                        // ========================================
+
+                        const progressMateri =
+                            materiSelesai
+                                ? 100
+                                : Math.min(
+                                    100,
+                                    (
+                                        completedCount /
+                                        targetMateri
+                                    ) * 100
+                                );
+
+
+                        const progressKuis =
+                            kuisSelesai
+                                ? 100
+                                : Math.min(
+                                    100,
+                                    (
+                                        quizCount /
+                                        targetKuis
+                                    ) * 100
+                                );
+
+
+                        // ========================================
+                        // RENDER MISI
+                        // ========================================
+
+                        container.innerHTML = `
+
+                            <!-- MISI MATERI -->
+
+                            <div class="modern-card"
+                                style="
+                                    padding: 22px;
+                                    border-left:
+                                        5px solid #667eea;
+                                ">
+
+                                <div style="
+                                    display:flex;
+                                    justify-content:
+                                        space-between;
+                                    align-items:center;
+                                    margin-bottom:12px;
+                                ">
+
+                                    <div style="font-size:34px;">
+                                        📖
+                                    </div>
+
+                                    <span style="
+                                        background:
+                                            ${materiSelesai
+                                                ? '#c6f6d5'
+                                                : '#edf2f7'};
+                                        color:
+                                            ${materiSelesai
+                                                ? '#276749'
+                                                : '#4a5568'};
+                                        padding:5px 10px;
+                                        border-radius:20px;
+                                        font-size:11px;
+                                        font-weight:600;
+                                    ">
+
+                                        ${materiSelesai
+                                            ? '✅ Selesai'
+                                            : '🎯 Berjalan'}
+
+                                    </span>
+
+                                </div>
+
+
+                                <h3 style="
+                                    font-family:'Fredoka',
+                                    sans-serif;
+                                    color:#2d3748;
+                                    margin-bottom:6px;
+                                ">
+                                    Misi Materi
+                                </h3>
+
+
+                                <p style="
+                                    color:#718096;
+                                    font-size:13px;
+                                    margin-bottom:14px;
+                                ">
+
+                                    ${
+                                        materiSelesai
+                                            ? 'Seluruh materi PAI telah diselesaikan!'
+                                            :
+                                            `Selesaikan ${targetMateri}
+                                            materi pembelajaran.`
+                                    }
+
+                                </p>
+
+
+                                <div style="
+                                    display:flex;
+                                    justify-content:
+                                        space-between;
+                                    margin-bottom:6px;
+                                    font-size:12px;
+                                ">
+
+                                    <span>
+                                        Progress
+                                    </span>
+
+                                    <strong>
+
+                                        ${
+                                            Math.min(
+                                                completedCount,
+                                                10
+                                            )
+                                        } /
+                                        ${
+                                            materiSelesai
+                                                ? 10
+                                                : targetMateri
+                                        }
+
+                                    </strong>
+
+                                </div>
+
+
+                                <div style="
+                                    background:#edf2f7;
+                                    height:8px;
+                                    border-radius:20px;
+                                    overflow:hidden;
+                                ">
+
+                                    <div style="
+                                        width:
+                                            ${progressMateri}%;
+                                        height:100%;
+                                        background:
+                                            linear-gradient(
+                                                90deg,
+                                                #667eea,
+                                                #764ba2
+                                            );
+                                        transition:
+                                            width 0.5s;
+                                    ">
+                                    </div>
+
+                                </div>
+
+
+                                <div style="
+                                    margin-top:12px;
+                                    color:#667eea;
+                                    font-size:12px;
+                                    font-weight:600;
+                                ">
+                                    🏆 Target:
+                                    ${
+                                        materiSelesai
+                                            ? 'Semua tercapai'
+                                            : rewardMateri
+                                    }
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- MISI KUIS -->
+
+                            <div class="modern-card"
+                                style="
+                                    padding:22px;
+                                    border-left:
+                                        5px solid #ed8936;
+                                ">
+
+                                <div style="
+                                    display:flex;
+                                    justify-content:
+                                        space-between;
+                                    align-items:center;
+                                    margin-bottom:12px;
+                                ">
+
+                                    <div style="font-size:34px;">
+                                        🎯
+                                    </div>
+
+                                    <span style="
+                                        background:
+                                            ${kuisSelesai
+                                                ? '#c6f6d5'
+                                                : '#fffaf0'};
+                                        color:
+                                            ${kuisSelesai
+                                                ? '#276749'
+                                                : '#c05621'};
+                                        padding:5px 10px;
+                                        border-radius:20px;
+                                        font-size:11px;
+                                        font-weight:600;
+                                    ">
+
+                                        ${kuisSelesai
+                                            ? '✅ Selesai'
+                                            : '🎯 Berjalan'}
+
+                                    </span>
+
+                                </div>
+
+
+                                <h3 style="
+                                    font-family:'Fredoka',
+                                    sans-serif;
+                                    color:#2d3748;
+                                    margin-bottom:6px;
+                                ">
+                                    Misi Kuis
+                                </h3>
+
+
+                                <p style="
+                                    color:#718096;
+                                    font-size:13px;
+                                    margin-bottom:14px;
+                                ">
+
+                                    ${
+                                        kuisSelesai
+                                            ? 'Seluruh target kuis telah diselesaikan!'
+                                            :
+                                            `Selesaikan ${targetKuis}
+                                            kuis pembelajaran.`
+                                    }
+
+                                </p>
+
+
+                                <div style="
+                                    display:flex;
+                                    justify-content:
+                                        space-between;
+                                    margin-bottom:6px;
+                                    font-size:12px;
+                                ">
+
+                                    <span>
+                                        Progress
+                                    </span>
+
+                                    <strong>
+
+                                        ${
+                                            Math.min(
+                                                quizCount,
+                                                10
+                                            )
+                                        } /
+                                        ${
+                                            kuisSelesai
+                                                ? 10
+                                                : targetKuis
+                                        }
+
+                                    </strong>
+
+                                </div>
+
+
+                                <div style="
+                                    background:#edf2f7;
+                                    height:8px;
+                                    border-radius:20px;
+                                    overflow:hidden;
+                                ">
+
+                                    <div style="
+                                        width:${progressKuis}%;
+                                        height:100%;
+                                        background:
+                                            linear-gradient(
+                                                90deg,
+                                                #ed8936,
+                                                #f6ad55
+                                            );
+                                    ">
+                                    </div>
+
+                                </div>
+
+
+                                <div style="
+                                    margin-top:12px;
+                                    color:#dd6b20;
+                                    font-size:12px;
+                                    font-weight:600;
+                                ">
+
+                                    🏆 Target:
+                                    ${
+                                        kuisSelesai
+                                            ? 'Semua tercapai'
+                                            : rewardKuis
+                                    }
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- MISI NILAI 100 -->
+
+                            <div class="modern-card"
+                                style="
+                                    padding:22px;
+                                    border-left:
+                                        5px solid #ecc94b;
+                                ">
+
+                                <div style="
+                                    display:flex;
+                                    justify-content:
+                                        space-between;
+                                    align-items:center;
+                                    margin-bottom:12px;
+                                ">
+
+                                    <div style="font-size:34px;">
+                                        🏆
+                                    </div>
+
+                                    <span style="
+                                        background:
+                                            ${hasPerfectScore
+                                                ? '#c6f6d5'
+                                                : '#fffff0'};
+                                        color:
+                                            ${hasPerfectScore
+                                                ? '#276749'
+                                                : '#975a16'};
+                                        padding:5px 10px;
+                                        border-radius:20px;
+                                        font-size:11px;
+                                        font-weight:600;
+                                    ">
+
+                                        ${hasPerfectScore
+                                            ? '✅ Selesai'
+                                            : '⭐ Tantangan'}
+
+                                    </span>
+
+                                </div>
+
+
+                                <h3 style="
+                                    font-family:'Fredoka',
+                                    sans-serif;
+                                    color:#2d3748;
+                                    margin-bottom:6px;
+                                ">
+                                    Bintang Kuis
+                                </h3>
+
+
+                                <p style="
+                                    color:#718096;
+                                    font-size:13px;
+                                    margin-bottom:14px;
+                                ">
+
+                                    ${
+                                        hasPerfectScore
+                                            ? 'Hebat! Kamu pernah mendapatkan nilai 100.'
+                                            : 'Dapatkan nilai 100 pada salah satu kuis.'
+                                    }
+
+                                </p>
+
+
+                                <div style="
+                                    background:#edf2f7;
+                                    height:8px;
+                                    border-radius:20px;
+                                    overflow:hidden;
+                                ">
+
+                                    <div style="
+                                        width:
+                                            ${hasPerfectScore
+                                                ? 100
+                                                : 0}%;
+                                        height:100%;
+                                        background:
+                                            linear-gradient(
+                                                90deg,
+                                                #ecc94b,
+                                                #f6e05e
+                                            );
+                                    ">
+                                    </div>
+
+                                </div>
+
+
+                                <div style="
+                                    margin-top:12px;
+                                    color:#b7791f;
+                                    font-size:12px;
+                                    font-weight:600;
+                                ">
+                                    🏆 Achievement:
+                                    Bintang Kuis
+                                </div>
+
+                            </div>
+
+                        `;
+
+
+                    } catch (error) {
+
+                        console.error(
+                            '❌ Error loading missions:',
+                            error
+                        );
+
+                        container.innerHTML = `
+
+                            <div class="modern-card">
+
+                                <p style="
+                                    color:#e53e3e;
+                                ">
+                                    Gagal memuat misi belajar.
+                                </p>
+
+                            </div>
+
+                        `;
+
+                    }
+
+                }
+
+
+        // Load real statistics with REAL-TIME updates
+        function loadRealStats(userId) {
+    try {
+        console.log('📊 Setting up REAL-TIME stats listeners...');
+
+        // REAL-TIME listener untuk hasil kuis
+       firebase.database()
+            .ref('quiz-results/' + userId)
+            .on('value', (quizSnapshot) => {
+
+                const quizResults =
+                    quizSnapshot.val();
+
+                if (quizResults) {
+
+                    const resultsArray =
+                        Object.values(
+                            quizResults
+                        );
+
+                    const totalPercobaan =
+                        resultsArray.length;
+
+                    // Hitung jumlah kuis yang berbeda
+                    const totalKuis =
+                        new Set(
+
+                            resultsArray
+                                .map(result =>
+                                    result.quizId ||
+                                    result.materiId ||
+                                    result.quizType
+                                )
+                                .filter(Boolean)
+
+                        ).size;
+
+                    const avgScore =
+                        totalPercobaan > 0
+                            ? Math.round(
+                                resultsArray.reduce(
+                                    (sum, r) =>
+                                        sum +
+                                        Number(r.score || 0),
+                                    0
+                                ) / totalPercobaan
+                            )
+                            : 0;
+
+                    document.getElementById(
+                        'skorRata'
+                    ).textContent =
+                        avgScore;
+
+                    document.getElementById(
+                        'kuisDikerjakan'
+                    ).textContent =
+                        totalKuis;
+
+                } else {
+
+                    document.getElementById(
+                        'skorRata'
+                    ).textContent = 0;
+
+                    document.getElementById(
+                        'kuisDikerjakan'
+                    ).textContent = 0;
+
+                }
+
+                // UPDATE GAMIFIKASI
+                updateAchievements(userId);
+                loadLearningMissions(userId);
+
+            });
+
+        const materiRef = firebase.database().ref('materi-kelas4');
+        const progressRef = firebase.database().ref('progress/' + userId + '/materi');
+
+        async function renderMateriProgress() {
+            const materiSnapshot = await materiRef.once('value');
+            const progressSnapshot = await progressRef.once('value');
+
+            const materiData = materiSnapshot.val() || {};
+            const materiProgress = progressSnapshot.val() || {};
+
+            const materiEntries = Object.entries(materiData);
+            const totalMateriFirebase = materiEntries.length;
+
+            const completedMateri = materiEntries.filter(([id]) => {
+                return materiProgress[id]?.completed === true;
+            });
+
+            const totalSelesai = completedMateri.length;
+            
+
+            const progressContainer = document.getElementById('materiProgressContainer');
+
+            if (!progressContainer) return;
+
+            if (materiEntries.length === 0) {
+                progressContainer.innerHTML = `
+                    <div style="grid-column:1 / -1; color:#718096;">
+                        Belum ada materi dari guru.
+                    </div>
+                `;
+
+                document.getElementById('materiSelesai').textContent = 0;
+                
+                document.getElementById('overallProgressBar').style.width = '0%';
+                document.getElementById('overallProgress').textContent = '0%';
+                return;
+            }
+
+            progressContainer.innerHTML = materiEntries.map(([id, materi]) => {
+                const selesai = materiProgress[id]?.completed === true;
+                const percent = selesai ? 100 : 0;
+
+                return `
+                    <div style="font-size: 13px;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                            <span style="font-weight:600; color:#2d3748;">
+                                ${escapeHTML(materi.ikon || '📚')} ${escapeHTML(materi.judul || 'Tanpa Judul')}
+                            </span>
+                            <span style="color:#718096;">${percent}%</span>
+                        </div>
+
+                        <div class="progress-bar-modern">
+                            <div class="progress-fill" style="width:${percent}%;"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            const overallPercent = totalMateriFirebase > 0
+                ? Math.round((totalSelesai / totalMateriFirebase) * 100)
+                : 0;
+
+            document.getElementById('materiSelesai').textContent = totalSelesai;
+            
+            document.getElementById('overallProgressBar').style.width = overallPercent + '%';
+            document.getElementById('overallProgress').textContent = overallPercent + '%';
+
+            console.log('✅ Progress Firebase updated:', {
+                totalSelesai,
+                totalMateriFirebase,
+                overallPercent
+            });
+        }
+
+        materiRef.on('value', renderMateriProgress);
+        progressRef.on('value', () => {
+            renderMateriProgress();
+
+            loadRecentActivity(userId);
+
+            updateAchievements(userId);
+
+            loadLearningMissions(userId);
+        });
+
+    } catch (error) {
+        console.error('❌ Error loading real stats:', error);
+        showError('Gagal memuat statistik: ' + error.message);
+    }
+}
+
+        // ========================================
+        // ACHIEVEMENT SYSTEM
+        // ========================================
+
+        async function updateAchievements(userId) {
+
+            const container =
+                document.getElementById(
+                    'achievementPreview'
+                );
+
+            if (!container) return;
+
+
+            try {
+
+                const materiSnapshot =
+                    await firebase.database()
+                        .ref('materi-kelas4')
+                        .once('value');
+
+
+                const progressSnapshot =
+                    await firebase.database()
+                        .ref(
+                            'progress/' +
+                            userId +
+                            '/materi'
+                        )
+                        .once('value');
+
+
+                const quizSnapshot =
+                    await firebase.database()
+                        .ref(
+                            'quiz-results/' +
+                            userId
+                        )
+                        .once('value');
+
+
+                const streakSnapshot =
+                    await firebase.database()
+                        .ref(
+                            'streaks/' +
+                            userId
+                        )
+                        .once('value');
+
+
+                const materiData =
+                    materiSnapshot.val() || {};
+
+                const progressData =
+                    progressSnapshot.val() || {};
+
+                const quizData =
+                    quizSnapshot.val() || {};
+
+                const streakData =
+                    streakSnapshot.val() || {};
+
+
+                const materiIds =
+                    Object.keys(materiData);
+
+
+                const completedCount =
+                    materiIds.filter(id => {
+
+                        return (
+                            progressData[id]?.completed ===
+                            true
+                        );
+
+                    }).length;
+
+
+                const quizArray =
+                    Object.values(quizData);
+
+
+                const quizCount =
+                    new Set(
+
+                        quizArray
+                            .map(result =>
+                                result.quizId ||
+                                result.materiId ||
+                                result.quizType
+                            )
+                            .filter(Boolean)
+
+                    ).size;
+
+
+                const hariBelajar =
+                    Number(
+                        streakData.streak
+                    ) || 0;
+
+
+                const hasPerfectScore =
+                    quizArray.some(q => {
+
+                        return (
+                            Number(q.score) >= 100
+                        );
+
+                    });
+
+
+                const achievements = [
+
+                    {
+                        icon: '📖',
+                        title: 'Langkah Pertama',
+                        description:
+                            'Selesaikan 1 materi',
+                        unlocked:
+                            completedCount >= 1,
+                        progress:
+                            `${Math.min(
+                                completedCount,
+                                1
+                            )}/1`
+                    },
+
+                    {
+                        icon: '✨',
+                        title: 'Rajin Belajar',
+                        description:
+                            'Selesaikan 3 materi',
+                        unlocked:
+                            completedCount >= 3,
+                        progress:
+                            `${Math.min(
+                                completedCount,
+                                3
+                            )}/3`
+                    },
+
+                    {
+                        icon: '🕌',
+                        title: 'Santri Rajin',
+                        description:
+                            'Selesaikan 5 materi',
+                        unlocked:
+                            completedCount >= 5,
+                        progress:
+                            `${Math.min(
+                                completedCount,
+                                5
+                            )}/5`
+                    },
+
+                    {
+                        icon: '📚',
+                        title: 'Ahli PAI',
+                        description:
+                            'Selesaikan seluruh 10 materi',
+                        unlocked:
+                            completedCount >= 10,
+                        progress:
+                            `${Math.min(
+                                completedCount,
+                                10
+                            )}/10`
+                    },
+
+                    {
+                        icon: '🎯',
+                        title: 'Pejuang Kuis',
+                        description:
+                            'Selesaikan 5 kuis',
+                        unlocked:
+                            quizCount >= 5,
+                        progress:
+                            `${Math.min(
+                                quizCount,
+                                5
+                            )}/5`
+                    },
+
+                    {
+                        icon: '🏆',
+                        title: 'Bintang Kuis',
+                        description:
+                            'Dapatkan nilai 100',
+                        unlocked:
+                            hasPerfectScore,
+                        progress:
+                            hasPerfectScore
+                                ? '1/1'
+                                : '0/1'
+                    },
+
+                    {
+                        icon: '🔥',
+                        title: 'Semangat Belajar',
+                        description:
+                            'Aktif belajar 3 hari',
+                        unlocked:
+                            hariBelajar >= 3,
+                        progress:
+                            `${Math.min(
+                                hariBelajar,
+                                3
+                            )}/3`
+                    },
+
+                    {
+                        icon: '🌟',
+                        title: 'Pelajar Konsisten',
+                        description:
+                            'Aktif belajar 7 hari',
+                        unlocked:
+                            hariBelajar >= 7,
+                        progress:
+                            `${Math.min(
+                                hariBelajar,
+                                7
+                            )}/7`
+                    },
+
+                    {
+                        icon: '👑',
+                        title: 'Master SIPAI',
+                        description:
+                            'Selesaikan 10 materi dan 10 kuis',
+                        unlocked:
+                            (
+                                completedCount >= 10 &&
+                                quizCount >= 10
+                            ),
+                        progress:
+                            `${Math.min(
+                                completedCount +
+                                quizCount,
+                                20
+                            )}/20`
+                    }
+
+                ];
+
+
+                // ========================================
+                // HITUNG BADGE YANG TERBUKA
+                // ========================================
+
+                const unlockedCount =
+                    achievements.filter(
+                        item => item.unlocked
+                    ).length;
+
+
+                const badgeCountElement =
+                    document.getElementById(
+                        'badgeCount'
+                    );
+
+                if (badgeCountElement) {
+
+                    badgeCountElement.textContent =
+                        unlockedCount;
+
+                }
+
+
+                // ========================================
+                // TAMPILKAN ACHIEVEMENT
+                // ========================================
+
+                container.innerHTML =
+                    achievements.map(item => {
+
+                        return `
+
+                            <div class="
+                                achievement-badge
+                                ${
+                                    item.unlocked
+                                        ? ''
+                                        : 'locked'
+                                }
+                            ">
+
+                                <div style="
+                                    font-size:42px;
+                                    margin-bottom:8px;
+                                ">
+
+                                    ${
+                                        item.unlocked
+                                            ? item.icon
+                                            : '🔒'
+                                    }
+
+                                </div>
+
+
+                                <div style="
+                                    font-weight:600;
+                                    color:#2d3748;
+                                    margin-bottom:5px;
+                                ">
+
+                                    ${item.title}
+
+                                </div>
+
+
+                                <div style="
+                                    font-size:11px;
+                                    color:#718096;
+                                    margin-bottom:7px;
+                                ">
+
+                                    ${item.description}
+
+                                </div>
+
+
+                                <div style="
+                                    font-size:11px;
+                                    font-weight:600;
+                                    color:
+                                        ${
+                                            item.unlocked
+                                                ? '#38a169'
+                                                : '#a0aec0'
+                                        };
+                                ">
+
+                                    ${
+                                        item.unlocked
+                                            ? '✅ Terbuka'
+                                            :
+                                            `Progress:
+                                            ${item.progress}`
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        `;
+
+                    }).join('');
+
+
+                console.log(
+                    '🏆 Achievement:',
+                    {
+                        completedCount,
+                        quizCount,
+                        hariBelajar,
+                        unlockedCount
+                    }
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    '❌ Error achievement:',
+                    error
+                );
+
+            }
+
+        }
+  
+        // Load recent activity
+        async function loadRecentActivity(userId) {
+    try {
+        const activities = [];
+
+        const materiMasterSnapshot = await firebase.database().ref('materi-kelas4').once('value');
+        const materiMaster = materiMasterSnapshot.val() || {};
+
+        // Get quiz results
+        const quizSnapshot = await firebase.database().ref('quiz-results/' + userId)
+            .orderByChild('timestamp')
+            .limitToLast(3)
+            .once('value');
+
+        if (quizSnapshot.val()) {
+            Object.values(quizSnapshot.val()).forEach(result => {
+                activities.push({
+                    type: 'quiz',
+                    data: result,
+                    timestamp: result.timestamp || Date.now()
+                });
+            });
+        }
+
+        // Get materi progress
+        const materiSnapshot = await firebase.database().ref('progress/' + userId + '/materi').once('value');
+
+        if (materiSnapshot.val()) {
+            Object.entries(materiSnapshot.val()).forEach(([key, value]) => {
+                if (value.completed) {
+                    const judulMateri =
+                        value.title ||
+                        materiMaster[key]?.judul ||
+                        key;
+
+                    activities.push({
+                        type: 'materi',
+                        data: {
+                            topik: key,
+                            title: judulMateri,
+                            ...value
+                        },
+                        timestamp: value.completedAt || Date.now()
+                    });
+                }
+            });
+        }
+
+        activities.sort((a, b) => b.timestamp - a.timestamp);
+
+        const activityContainer = document.getElementById('recentActivity');
+        if (!activityContainer) return;
+
+        if (activities.length === 0) {
+            activityContainer.innerHTML = `
+                <div class="activity-item">
+                    <div class="activity-icon">🎓</div>
+                    <div style="flex: 1;">
+                        <h4 style="font-weight: 600; color: #2d3748; margin-bottom: 4px;">
+                            Selamat Datang!
+                        </h4>
+                        <p style="color: #718096; font-size: 14px;">
+                            Mulai belajar dengan materi PAI
+                        </p>
+                    </div>
+                </div>
+            `;
+            return;
+        }
+
+        activityContainer.innerHTML = '';
+
+        activities.slice(0, 5).forEach(activity => {
+            
+            let html = '';
+
+            if (activity.type === 'quiz') {
+                const grade = activity.data.score >= 80 ? '🎉' : '👍';
+                const quizName = activity.data.quizType || activity.data.quizId || 'Kuis';
+
+                html = `
+                    <div class="activity-item">
+                        <div class="activity-icon" style="background: var(--gradient-warning);">🎯</div>
+                        <div style="flex: 1;">
+                            <h4 style="font-weight: 600; color: #2d3748; margin-bottom: 4px;">
+                                ${grade} Menyelesaikan Kuis ${escapeHTML(quizName)}
+                            </h4>
+                            <p style="color: #718096; font-size: 14px;">
+                                Skor: ${activity.data.score || 0}/100 - ${activity.data.correct || 0}/${activity.data.total || 0} benar
+                            </p>
+                        </div>
+                        
+                    </div>
+                `;
+            } else if (activity.type === 'materi') {
+                html = `
+                    <div class="activity-item">
+                        <div class="activity-icon" style="background: var(--gradient-success);">📚</div>
+                        <div style="flex: 1;">
+                            <h4 style="font-weight: 600; color: #2d3748; margin-bottom: 4px;">
+                                ✅ Menyelesaikan Materi ${escapeHTML(activity.data.title)}
+                            </h4>
+                            <p style="color: #718096; font-size: 14px;">
+                                Materi berhasil diselesaikan
+                            </p>
+                        </div>
+                        
+                    </div>
+                `;
+            }
+
+            activityContainer.innerHTML += html;
+        });
+
+    } catch (error) {
+        console.error('Error loading recent activity:', error);
+    }
+}
+        // Helper function to get time ago
+        function escapeHTML(value) {
+        return String(value ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+
+            
+            
+          
+    </script>
+</body>
+</html>

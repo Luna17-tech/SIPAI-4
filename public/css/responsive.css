@@ -1,0 +1,160 @@
+/* ========================================
+   RESPONSIVE DESIGN - MOBILE FIRST
+======================================== */
+
+/* === TABLET (768px and below) === */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+    }
+    
+    .nav-menu {
+        flex-direction: column;
+        gap: 0.5rem;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--primary);
+        padding: 1rem;
+        display: none;
+    }
+    
+    .nav-menu.active {
+        display: flex;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .topic-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* === MOBILE (480px and below) === */
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 1.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+    
+    .navbar .container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .student-table {
+        font-size: 0.85rem;
+    }
+    
+    .student-table th,
+    .student-table td {
+        padding: 0.5rem;
+    }
+}
+
+/* === DASHBOARD GRID === */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.dashboard-main {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.dashboard-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* === TABLE RESPONSIVE === */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.student-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.student-table th,
+.student-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+.student-table th {
+    background: var(--bg-light);
+    font-weight: 600;
+}
+
+.student-table tr:hover {
+    background: var(--bg-light);
+}
+
+/* === QUIZ RESPONSIVE === */
+.quiz-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+@media (max-width: 768px) {
+    .quiz-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* === MATERI GRID === */
+.materi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+    .materi-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,102 @@
+/* ============================================
+   TOAST NOTIFICATIONS
+   ============================================ */
+
+.notification-container {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none;
+}
+
+.notification {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    min-width: 300px;
+    max-width: 400px;
+    pointer-events: all;
+    transform: translateX(400px);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-left: 4px solid #cbd5e0;
+}
+
+.notification.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.notification-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.notification-message {
+    flex: 1;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #2d3748;
+}
+
+.notification-close {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    color: #a0aec0;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.notification-close:hover {
+    background: #edf2f7;
+    color: #2d3748;
+}
+
+.notification-success {
+    border-left-color: #48bb78;
+    background: linear-gradient(to right, #f0fff4 0%, white 100%);
+}
+
+.notification-error {
+    border-left-color: #f56565;
+    background: linear-gradient(to right, #fff5f5 0%, white 100%);
+}
+
+.notification-warning {
+    border-left-color: #ed8936;
+    background: linear-gradient(to right, #fffaf0 0%, white 100%);
+}
+
+.notification-info {
+    border-left-color: #4299e1;
+    background: linear-gradient(to right, #ebf8ff 0%, white 100%);
+}
+
+@media (max-width: 480px) {
+    .notification-container {
+        left: 20px;
+        right: 20px;
+    }
+    
+    .notification {
+        min-width: auto;
+        max-width: none;
+    }
+}

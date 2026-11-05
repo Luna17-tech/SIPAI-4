@@ -1,0 +1,254 @@
+/* ========================================
+   ANIMATIONS & TRANSITIONS
+======================================== */
+
+/* === FADE IN === */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.8s ease-in;
+}
+
+/* === SLIDE UP === */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-up {
+    animation: slideUp 0.6s ease-out;
+}
+
+/* === BOUNCE IN === */
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.bounce-in {
+    animation: bounceIn 0.8s ease-out;
+}
+
+/* === SHAKE (for errors) === */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.shake {
+    animation: shake 0.5s;
+}
+
+/* === PULSE === */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+/* === FLOATING === */
+@keyframes floating {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.floating {
+    animation: floating 3s ease-in-out infinite;
+}
+
+/* === PROGRESS RING === */
+.progress-ring {
+    transform: rotate(-90deg);
+}
+
+.progress-ring-circle-bg {
+    stroke: #e2e8f0;
+    stroke-width: 10;
+    fill: none;
+}
+
+.progress-ring-circle {
+    stroke: url(#gradient);
+    stroke-width: 10;
+    fill: none;
+    stroke-dasharray: 565;
+    stroke-dashoffset: 565;
+    transition: stroke-dashoffset 1s ease;
+    stroke-linecap: round;
+}
+
+/* === MODAL === */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    animation: fadeIn 0.3s;
+}
+
+.modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: 2rem;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s;
+}
+
+.modal-large {
+    max-width: 900px;
+}
+
+.close {
+    float: right;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--text-gray);
+    transition: color 0.3s;
+}
+
+.close:hover {
+    color: var(--danger);
+}
+
+/* === LOADING SPINNER === */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.spinner {
+    border: 3px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 0.8s linear infinite;
+    margin: 2rem auto;
+}
+
+/* === SUCCESS/ERROR ANIMATIONS === */
+.feedback {
+    padding: 0.75rem;
+    border-radius: var(--radius);
+    margin-top: 0.5rem;
+    font-weight: 600;
+    animation: slideUp 0.3s;
+}
+
+.feedback.correct {
+    background: #d1fae5;
+    color: var(--success);
+    border-left: 4px solid var(--success);
+}
+
+.feedback.incorrect {
+    background: #fee2e2;
+    color: var(--danger);
+    border-left: 4px solid var(--danger);
+}
+
+/* === BADGE ANIMATIONS === */
+.badge {
+    font-size: 3rem;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-light);
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.badge:hover {
+    transform: scale(1.1);
+}
+
+.badge.badge-locked {
+    opacity: 0.3;
+    filter: grayscale(100%);
+}
+
+.badge.unlocked {
+    animation: bounceIn 0.8s;
+}
+
+/* === NOTIFICATION === */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.notification {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-xl);
+    animation: slideInRight 0.3s;
+    z-index: 9999;
+}
+
+.notification.success {
+    border-left: 4px solid var(--success);
+}
+
+.notification.error {
+    border-left: 4px solid var(--danger);
+}

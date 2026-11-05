@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>    
+    <link rel="stylesheet" href="css/navigation.css">
+    <link rel="stylesheet" href="css/loader.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievements - PAI SD Kelas 4</title>
+    <link rel="stylesheet" href="css/modern-style.css">
+    <style>
+        .badge-item {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .badge-item.unlocked {
+            cursor: pointer;
+        }
+
+        .badge-item.unlocked:hover {
+            transform: translateY(-12px) scale(1.05);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .badge-item.locked {
+            opacity: 0.5;
+            filter: grayscale(100%);
+        }
+
+        .badge-icon {
+            font-size: 100px;
+            margin-bottom: 20px;
+            display: inline-block;
+            transition: transform 0.4s ease;
+        }
+
+        .badge-item.unlocked:hover .badge-icon {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .badge-glow {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.3) 0%, transparent 70%);
+            animation: glow 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes glow {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--color-primary);
+            position: absolute;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Back Button -->
+        <script src="js/loader.js"></script>
+    <script src="js/navigation.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initNavigation('achievements');
+        });
+    </script>
+
+    <div style="max-width: 1400px; margin: 0 auto; padding: 20px;">
+        <!-- Header -->
+        <div style="text-align: center; padding: 80px 20px 60px; background: var(--gradient-warning); color: white; border-radius: var(--radius-xl); margin-bottom: 40px; position: relative; overflow: hidden;">
+            <div class="badge-glow"></div>
+            <h1 style="font-family: 'Fredoka', sans-serif; font-size: 56px; margin-bottom: 16px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); position: relative; z-index: 1;">
+                🏆 Achievements
+            </h1>
+            <p style="font-size: 20px; opacity: 0.95; position: relative; z-index: 1;">Kumpulkan semua badge dan jadi Master PAI!</p>
+        </div>
+
+        <!-- Stats -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-bottom: 50px;">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--gradient-warning);">🏆</div>
+                <div class="stat-content">
+                    <h3 id="totalBadges">2/11</h3>
+                    <p>Badge Terkumpul</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--gradient-success);">⭐</div>
+                <div class="stat-content">
+                    <h3 id="totalPoints">250</h3>
+                    <p>Total Poin</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--gradient-primary);">🎖️</div>
+                <div class="stat-content">
+                    <h3 id="rank">📖 Pemula PAI</h3>
+                    <p>Rank Saat Ini</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--gradient-info);">📈</div>
+                <div class="stat-content">
+                    <h3 id="badgeProgress">0%</h3>
+                    <p>Progress Badge</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Unlocked Badges -->
+        <div style="margin-bottom: 50px;">
+            <h2 style="font-family: 'Fredoka', sans-serif; font-size: 36px; margin-bottom: 30px; color: #2d3748; text-align: center;">
+                ✨ Badge yang Kamu Miliki
+            </h2>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 30px;">
+                <!-- Badge 1 - Unlocked -->
+                <div class="badge-item unlocked" onclick="showBadgeDetail('first-login')">
+                    <div class="badge-glow"></div>
+                    <div class="badge-icon icon-bounce">📖</div>
+                    <h3 style="font-family: 'Fredoka', sans-serif; font-size: 20px; margin-bottom: 8px; color: #2d3748;">Pemula PAI</h3>
+                    <p style="color: #718096; font-size: 14px; margin-bottom: 12px;">Menyelesaikan 1 materi PAI</p>
+                    <span class="badge-modern" style="background: var(--gradient-success); font-size: 12px;">✅ Terbuka</span>
+                    <p style="color: var(--color-success); font-size: 12px; margin-top: 8px; font-weight: 600;">+50 poin</p>
+                </div>
+
+                <!-- Badge 2 - Unlocked -->
+                <div class="badge-item unlocked" onclick="showBadgeDetail('santri-rajin')">
+                    <div class="badge-glow"></div>
+                    <div class="badge-icon icon-bounce">🕌</div>
+                    <h3 style="font-family: 'Fredoka', sans-serif; font-size: 20px; margin-bottom: 8px; color: #2d3748;">Santri Rajin</h3>
+                    <p style="color: #718096; font-size: 14px; margin-bottom: 12px;">Menyelesaikan 5 materi PAI</p>
+                    <span class="badge-modern" style="background: var(--gradient-success); font-size: 12px;">✅ Terbuka</span>
+                    <p style="color: var(--color-success); font-size: 12px; margin-top: 8px; font-weight: 600;">+100 poin</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Locked Badges -->
+        <div style="margin-bottom: 50px;">
+            <h2 style="font-family: 'Fredoka', sans-serif; font-size: 36px; margin-bottom: 30px; color: #2d3748; text-align: center;">
+                🔒 Badge yang Terkunci
+            </h2>
+            <p style="text-align: center; color: #718096; margin-bottom: 40px; font-size: 16px;">Selesaikan tantangan untuk membuka badge ini!</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 30px;">
+                <!-- Badge 3 - Locked -->
+                <div class="badge-item locked">
+                    <div class="badge-icon">✨</div>
+                    <h3 style="font-family: 'Fredoka', sans-serif; font-size: 20px; margin-bottom: 8px; color: #2d3748;">Pecinta Asmaul Husna</h3>
+                    <p style="color: #718096; font-size: 14px; margin-bottom: 12px;">Selesaikan Bab 2 Asmaul Husna</p>
+                    <span class="badge-modern" style="background: #e2e8f0; color: #718096; font-size: 12px;">🔒 Terkunci</span>
+                    <p style="color: #718096; font-size: 12px; margin-top: 8px;">+150 poin</p>
+                </div>
+
+                <!-- Badge 4 - Locked -->
+                <div class="badge-item locked">
+                    <div class="badge-icon">🤝</div>
+                    <h3 style="font-family: 'Fredoka', sans-serif; font-size: 20px; margin-bottom: 8px; color: #2d3748;">Anak Berakhlak</h3>
+                    <p style="color: #718096; font-size: 14px; margin-bottom: 12px;">Selesaikan Bab 3 Indahnya Saling Menghargai</p>
+                    <span class="badge-modern" style="background: #e2e8f0; color: #718096; font-size: 12px;">🔒 Terkunci</span>
+                    <p style="color: #718096; font-size: 12px; margin-top: 8px;">+150 poin</p>
+                </div>
+
+                <!-- Badge 5 - Locked -->
+                <div class="badge-item locked">
+                    <div class="badge-icon">⭐</div>
+                    <h3 style="font-family: 'Fredoka', sans-serif; font-size: 20px; margin-bottom: 8px; color: #2d3748;">Bintang PAI</h3>
+                    <p style="color: #718096; font-size: 14px; margin-bottom: 12px;">Dapatkan nilai 100 pada kuis</p>
+                    <span class="badge-modern" style="background: #e2e8f0; color: #718096; font-size: 12px;">🔒 Terkunci</span>
+                    <p style="color: #718096; font-size: 12px; margin-top: 8px;">+200 poin</p>
+                </div>
+
+                <!-- Badge 6 - Locked -->
+                <div class="badge-item locked">
+                    <div class="badge-icon">🔥</div>
+                    <h3 style="font-family: 'Fredoka', sans-serif; font-size: 20px; margin-bottom: 8px; color: #2d3748;">Streak Master</h3>
+                    <p style="color: #718096; font-size: 14px; margin-bottom: 12px;">Belajar 7 hari berturut-turut</p>
+                    <span class="badge-modern" style="background: #e2e8f0; color: #718096; font-size: 12px;">🔒 Terkunci</span>
+                    <p style="color: #718096; font-size: 12px; margin-top: 8px;">+250 poin</p>
+                </div>
+
+                <!-- Badge 7 - Locked -->
+                <div class="badge-item locked">
+                    <div class="badge-icon">👑</div>
+                    <h3 style="font-family: 'Fredoka', sans-serif; font-size: 20px; margin-bottom: 8px; color: #2d3748;">Master PAI Kelas 4</h3>
+                    <p style="color: #718096; font-size: 14px; margin-bottom: 12px;">Selesaikan seluruh Bab 1–10</p>
+                    <span class="badge-modern" style="background: #e2e8f0; color: #718096; font-size: 12px;">🔒 Terkunci</span>
+                    <p style="color: #718096; font-size: 12px; margin-top: 8px;">+500 poin</p>
+                </div>
+
+                <!-- Badge 8 - Locked -->
+                <div class="badge-item locked">
+                    <div class="badge-icon">🕋</div>
+                    <h3 style="font-family: 'Fredoka', sans-serif; font-size: 20px; margin-bottom: 8px; color: #2d3748;">Pecinta Rasul</h3>
+                    <p style="color: #718096; font-size: 14px; margin-bottom: 12px;">Selesaikan Bab 7 Beriman kepada Rasul-Rasul Allah</p>
+                    <span class="badge-modern" style="background: #e2e8f0; color: #718096; font-size: 12px;">🔒 Terkunci</span>
+                    <p style="color: #718096; font-size: 12px; margin-top: 8px;">+180 poin</p>
+                </div>
+
+                <!-- Badge 9 - Locked -->
+                <div class="badge-item locked">
+                    <div class="badge-icon">😊</div>
+                    <h3>Anak Saleh</h3>
+                    <p>Selesaikan Bab 8 Aku Anak Saleh</p>
+                    <span class="badge-modern">🔒 Terkunci</span>
+                </div>
+
+                <!-- Badge 10 - Locked -->
+                <div class="badge-item locked">
+                    <div class="badge-icon">🙏</div>
+                    <h3>Ahli Ibadah</h3>
+                    <p>Selesaikan Bab 9 Salat Jumat, Duha, dan Tahajud</p>
+                    <span class="badge-modern">🔒 Terkunci</span>
+                </div>
+
+                <!-- Badge 11 - Locked -->
+                <div class="badge-item locked">
+                    <div class="badge-icon">🌆</div>
+                    <h3>Sejarawan Islam</h3>
+                    <p>Selesaikan Bab 10 Nabi Muhammad Membangun Madinah</p>
+                    <span class="badge-modern">🔒 Terkunci</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Next Rank -->
+        <div class="gradient-card" style="padding: 50px 30px; background: var(--gradient-primary); color: white; text-align: center;">
+            <h3 style="font-family: 'Fredoka', sans-serif; font-size: 32px; margin-bottom: 20px;">🎖️ Rank Selanjutnya</h3>
+            <p style="font-size: 18px; opacity: 0.95; margin-bottom: 30px;">Selesaikan lebih banyak materi dan kuis untuk menjadi Master PAI!!</p>
+            <div class="progress-bar-modern" style="max-width: 600px; margin: 0 auto 20px; height: 20px;">
+                <div id="rankProgressBar" class="progress-fill" style="width: 0%; background: white;"></div>
+            </div>
+            <p id="rankProgressText" style="font-size: 16px; opacity: 0.9;">0/500 poin (0%)</p>
+        </div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/constants.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script>
+    console.log('Achievements Firebase page loaded!');
+
+    document.addEventListener('DOMContentLoaded', () => {
+        initNavigation('achievements');
+    });
+
+    firebase.auth().onAuthStateChanged(async (user) => {
+        if (!user) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        await loadAchievements(user.uid);
+    });
+
+    async function loadAchievements(userId) {
+        try {
+            const materiSnap = await firebase.database().ref('materi-kelas4').once('value');
+            const progressSnap = await firebase.database().ref('progress/' + userId + '/materi').once('value');
+            const quizSnap = await firebase.database().ref('quiz-results/' + userId).once('value');
+            const streakSnap = await firebase.database().ref('streaks/' + userId).once('value');
+
+            const materiData = materiSnap.val() || {};
+            const progressData = progressSnap.val() || {};
+            const quizData = quizSnap.val() || {};
+            const streakData = streakSnap.val() || {};
+
+            const materiIds = Object.keys(materiData);
+            const totalMateri = materiIds.length;
+
+            const completedMateri = materiIds.filter(id => {
+                return progressData[id]?.completed === true;
+            });
+
+            const completedCount = completedMateri.length;
+            const quizResults = Object.values(quizData);
+            const streak = streakData.streak || 0;
+
+            const hasPerfectScore = quizResults.some(q => (q.score || 0) >= 100);
+            const quizCount = quizResults.length;
+            const allCompleted = totalMateri > 0 && completedCount >= totalMateri;
+
+            const badges = [
+                {
+                    id: 'pemula-pai',
+                    icon: '📖',
+                    title: 'Pemula PAI',
+                    desc: 'Menyelesaikan 1 materi PAI',
+                    point: 50,
+                    unlocked: completedCount >= 1
+                },
+                {
+                    id: 'rajin-belajar',
+                    icon: '✨',
+                    title: 'Rajin Belajar',
+                    desc: 'Menyelesaikan 3 materi PAI',
+                    point: 100,
+                    unlocked: completedCount >= 3
+                },
+                {
+                    id: 'santri-rajin',
+                    icon: '🕌',
+                    title: 'Santri Rajin',
+                    desc: 'Menyelesaikan 5 materi PAI',
+                    point: 150,
+                    unlocked: completedCount >= 5
+                },
+                {
+                    id: 'bintang-kuis',
+                    icon: '⭐',
+                    title: 'Bintang Kuis',
+                    desc: 'Mendapatkan nilai 100 pada kuis',
+                    point: 200,
+                    unlocked: hasPerfectScore
+                },
+                {
+                    id: 'aktif-kuis',
+                    icon: '🎯',
+                    title: 'Aktif Kuis',
+                    desc: 'Mengerjakan minimal 3 kuis',
+                    point: 150,
+                    unlocked: quizCount >= 3
+                },
+                {
+                    id: 'streak-master',
+                    icon: '🔥',
+                    title: 'Streak Master',
+                    desc: 'Belajar 7 hari berturut-turut',
+                    point: 250,
+                    unlocked: streak >= 7
+                },
+                {
+                    id: 'master-pai',
+                    icon: '👑',
+                    title: 'Master PAI',
+                    desc: 'Menyelesaikan semua materi dari guru',
+                    point: 500,
+                    unlocked: allCompleted
+                }
+            ];
+
+            renderAchievements(badges, completedCount, totalMateri);
+
+        } catch (error) {
+            console.error('Gagal memuat achievements:', error);
+            alert('Gagal memuat achievements.');
+        }
+    }
+
+    function renderAchievements(badges, completedCount, totalMateri) {
+        const unlocked = badges.filter(b => b.unlocked);
+        const locked = badges.filter(b => !b.unlocked);
+
+        const totalPoints = unlocked.reduce((sum, b) => sum + b.point, 0);
+        const badgePercent = badges.length > 0
+            ? Math.round((unlocked.length / badges.length) * 100)
+            : 0;
+
+        document.getElementById('totalBadges').textContent = `${unlocked.length}/${badges.length}`;
+        document.getElementById('totalPoints').textContent = totalPoints;
+        document.getElementById('badgeProgress').textContent = `${badgePercent}%`;
+
+        const rankEl = document.getElementById('rank');
+
+        if (unlocked.some(b => b.id === 'master-pai')) {
+            rankEl.textContent = '👑 Master PAI';
+        } else if (completedCount >= 5) {
+            rankEl.textContent = '🕌 Santri Rajin';
+        } else if (completedCount >= 3) {
+            rankEl.textContent = '✨ Rajin Belajar';
+        } else {
+            rankEl.textContent = '📖 Pemula PAI';
+        }
+
+        const targetPoint = 500;
+        const rankPercent = Math.min(Math.round((totalPoints / targetPoint) * 100), 100);
+
+        const rankProgressBar = document.getElementById('rankProgressBar');
+        if (rankProgressBar) {
+            rankProgressBar.style.width = `${rankPercent}%`;
+        }
+
+        const rankProgressText = document.getElementById('rankProgressText');
+        if (rankProgressText) {
+            rankProgressText.textContent = `${totalPoints}/${targetPoint} poin (${rankPercent}%)`;
+        }
+
+        renderBadgeSection('unlocked', unlocked);
+        renderBadgeSection('locked', locked);
+    }
+
+    function renderBadgeSection(type, data) {
+        const sectionTitle = type === 'unlocked'
+            ? '✨ Badge yang Kamu Miliki'
+            : '🔒 Badge yang Terkunci';
+
+        const headings = Array.from(document.querySelectorAll('h2'));
+        const heading = headings.find(h => h.textContent.trim() === sectionTitle);
+
+        if (!heading) return;
+
+        const section = heading.parentElement;
+        const grid = section.querySelector('div[style*="grid-template-columns"]');
+
+        if (!grid) return;
+
+        if (data.length === 0) {
+            grid.innerHTML = `
+                <div style="grid-column:1/-1; text-align:center; padding:40px; color:#718096;">
+                    ${type === 'unlocked'
+                        ? 'Belum ada badge terbuka. Mulai selesaikan materi!'
+                        : 'Semua badge sudah terbuka. Hebat!'}
+                </div>
+            `;
+            return;
+        }
+
+        grid.innerHTML = data.map(badge => `
+            <div class="badge-item ${type === 'unlocked' ? 'unlocked' : 'locked'}"
+                 ${type === 'unlocked' ? `onclick="showBadgeDetail('${badge.id}')"` : ''}>
+
+                ${type === 'unlocked' ? '<div class="badge-glow"></div>' : ''}
+
+                <div class="badge-icon ${type === 'unlocked' ? 'icon-bounce' : ''}">
+                    ${badge.icon}
+                </div>
+
+                <h3 style="font-family:'Fredoka',sans-serif; font-size:20px; margin-bottom:8px; color:#2d3748;">
+                    ${escapeHTML(badge.title)}
+                </h3>
+
+                <p style="color:#718096; font-size:14px; margin-bottom:12px;">
+                    ${escapeHTML(badge.desc)}
+                </p>
+
+                <span class="badge-modern" style="
+                    ${type === 'unlocked'
+                        ? 'background:var(--gradient-success);'
+                        : 'background:#e2e8f0; color:#718096;'}
+                    font-size:12px;
+                ">
+                    ${type === 'unlocked' ? '✅ Terbuka' : '🔒 Terkunci'}
+                </span>
+
+                <p style="
+                    color:${type === 'unlocked' ? 'var(--color-success)' : '#718096'};
+                    font-size:12px;
+                    margin-top:8px;
+                    font-weight:600;
+                ">
+                    +${badge.point} poin
+                </p>
+            </div>
+        `).join('');
+    }
+
+    function showBadgeDetail(id) {
+        alert('Badge berhasil dibuka: ' + id);
+    }
+
+    function escapeHTML(value) {
+        return String(value ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+</script>
+</body>
+</html>
